@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as d3 from 'd3';
 import { ForceLink } from 'd3-force';
 
-const nodeRadius = 40;
+const nodeRadius = 20;
 const arrowSize = 12;
 
 interface D3GraphProps<N, R> {
@@ -91,7 +91,7 @@ class D3Graph<N, R> extends React.Component<D3GraphProps<N, R>, {}> {
         const link = update
             .enter()
             .append<SVGPathElement>('path')
-            .attr('id', (d) => `p${getLinkID(d.raw)}`)
+            .attr('id', (d) => `p${this.props.id+getLinkID(d.raw)}`)
             .attr('class', 'link')
             .attr('fill', 'none')
             .attr('stroke', 'black')
@@ -107,7 +107,7 @@ class D3Graph<N, R> extends React.Component<D3GraphProps<N, R>, {}> {
             .attr('text-anchor', 'middle')
             .style('background', '#FFFFFF')
             .append('textPath')
-            .attr('href', d => `#p${getLinkID(d.raw)}`)
+            .attr('href', d => `#p${this.props.id+getLinkID(d.raw)}`)
             .attr('startOffset', '50%')
             .html(d => getLinkText(d.raw));
 
@@ -168,12 +168,14 @@ class D3Graph<N, R> extends React.Component<D3GraphProps<N, R>, {}> {
             .attr('x', nodeRadius)
             .attr('y', nodeRadius - 5)
             .attr('font-weight', 'bold')
+            .attr('font-size', '10pt')
             .html(d => getNodeLabel(d.raw));
 
         node.append('text')
             .attr('text-anchor', 'middle')
             .attr('x', nodeRadius)
             .attr('y', nodeRadius + 15)
+            .attr('font-size', '10pt')
             .html(d => getNodeText(d.raw));
 
         update
@@ -188,7 +190,7 @@ class D3Graph<N, R> extends React.Component<D3GraphProps<N, R>, {}> {
 
         this.svg = d3.select<SVGSVGElement, {}>(`#${this.props.id}`)
             .style('width', '100%')
-            .style('height', '800px')
+            .style('height', '100%')
             .call(d3.zoom().on('zoom', () => {
                 let scale = d3.event.transform.k;
                 const {x, y} = d3.event.transform;
@@ -292,7 +294,7 @@ class D3Graph<N, R> extends React.Component<D3GraphProps<N, R>, {}> {
 
         return (
             <div style={{width: '100%', background: 'white'}}>
-                <svg id={this.props.id}>
+                <svg id={this.props.id} >
                     <defs>
                         <filter x="0" y="0" width="1" height="1" id="text-background">
                             <feFlood floodColor="#FFFFFF"/>

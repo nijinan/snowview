@@ -25,7 +25,6 @@ interface DocumentTabProps {
 type DocumentTabStyle = WithStyles<'container' | 'table' | 'progress'>;
 
 class DocumentTab extends React.Component<DocumentTabProps & DocumentTabStyle, {}> {
-
     render() {
         const {classes, documentResult} = this.props;
         return (

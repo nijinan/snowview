@@ -60,3 +60,33 @@ export interface DocumentResult {
     rankedResults: Array<RankedResult>;
 }
 
+export interface QueryNode{
+    focus: boolean;
+    type: string;
+    typeName: string;
+    display: string;
+    id: number;
+}
+
+export interface QueryEdge{
+    id: number;
+    start: number;
+    end: number;
+    type: string;
+}
+
+export interface QueryGraph{
+    nodes: QueryNode [];
+    edges: QueryEdge [];
+}
+
+export interface QueryInfo {
+    graph: QueryGraph;
+    score: number;
+    cypher: string;
+    rank: number;
+}
+
+export interface CypherResult {
+    rankedResults: QueryInfo[];
+}

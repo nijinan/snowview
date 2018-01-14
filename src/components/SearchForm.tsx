@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { fetchDocumentResultWorker, fetchGraphWorker, fetchRandomQuestionWorker } from '../redux/action';
+import { /*fetchDocumentResultWorker, fetchGraphWorker, */fetchCypherWorker, fetchRandomQuestionWorker } from '../redux/action';
 import { connect } from 'react-redux';
 import { Input, withStyles, WithStyles } from 'material-ui';
 import { RootState } from '../redux/reducer';
@@ -65,8 +65,9 @@ class SearchForm extends React.Component<SearchFormProps & SearchFormStyles, { i
         if (this.state.input === '') {
             dispatch(fetchRandomQuestionWorker((result: string) => this.setState({input: result})));
         } else {
-            dispatch(fetchDocumentResultWorker({query: this.state.input}));
-            dispatch(fetchGraphWorker({query: this.state.input}));
+            //dispatch(fetchDocumentResultWorker({query: this.state.input}));
+            //dispatch(fetchGraphWorker({query: this.state.input}));
+            dispatch(fetchCypherWorker({query: this.state.input}));
         }
     }
 
