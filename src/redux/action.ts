@@ -2,14 +2,14 @@ import * as $ from 'jquery';
 import actionCreatorFactory from 'typescript-fsa';
 import bindThunkAction from 'typescript-fsa-redux-thunk';
 import { CypherQueryResult, CypherResult, DocumentResult, RandomResult, Neo4jRelation, NavResult } from '../model';
-import { Neo4jNode } from '../model';
+import { Neo4jNode, TabType } from '../model';
 import { RootState } from './reducer';
 import * as _ from 'lodash';
 
 // const URL = 'http://162.105.88.181:8080/SnowGraph';
 // const URL = 'http://127.0.0.1:8080/SnowGraph';
-const URL = 'http://162.105.88.28:8080/SnowGraph';
-const URLnew = 'http://127.0.0.1:8080';
+const URL = 'http://127.0.0.1:8080/SnowGraph';
+const URLnew = 'http://127.0.0.1:8080/SnowGraph';
 
 const actionCreator = actionCreatorFactory();
 
@@ -74,7 +74,7 @@ export const fetchGraph = actionCreator.async<{ query: string }, {}>('FETCH_GRAP
 export const fetchGraphWorker = bindThunkAction(
     fetchGraph,
     async (params, dispatch) => {
-        const result: CypherQueryResult = await $.post(`${URL}/CypherQuery`, {query: params.query});
+        const result: CypherQueryResult = await $.post(`${URLnew}/CypherQuery`, {query: params.query, returnType : "node"});
         const nodes = result.searchResult.results[0].data[0].graph.nodes;
         const relations = result.searchResult.results[0].data[0].graph.relationships;
 
@@ -97,4 +97,15 @@ export const fetchCypherWorker = bindThunkAction(
     async (params) => {
         return await $.post(`${URLnew}/NLPQuery`, params);
     }
-);    
+); 
+
+export const fetchAttribute = actionCreator.async<{ query: string }, string[]>('FETCH_ATTRIBUTE');
+export const fetchAttributeWorker = bindThunkAction(
+    fetchAttribute,
+    async (params) => {
+        return await $.post(`${URLnew}/CypherQuery`, {query: params.query, returnType : "string"});
+    }
+); 
+
+
+export const changeTab = actionCreator<TabType>('CHANGE_TAB');

@@ -85,8 +85,11 @@ export interface QueryInfo {
     score: number;
     cypher: string;
     rank: number;
+    returnType: string;
 }
 
 export interface CypherResult {
     rankedResults: QueryInfo[];
 }
+
+export type TabType = 'api-graph' | 'document' | 'qa-cypher' | 'attribute-cypher';

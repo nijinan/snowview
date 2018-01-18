@@ -1,9 +1,9 @@
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
 import {
-    fetchDocumentResult, fetchRandomQuestion, fetchCypher
+    fetchDocumentResult, fetchRandomQuestion, fetchCypher, changeTab, fetchAttribute
 } from './action';
 import { combineReducers } from 'redux';
-import { DocumentResult,CypherResult } from '../model';
+import { DocumentResult,CypherResult,TabType } from '../model';
 import { show } from 'js-snackbar';
 import { graph, GraphState } from './graphReducer';
 import { navGraph, NavGraphState } from './navGraphReducer';
@@ -41,6 +41,15 @@ export interface CypherState{
     result?: CypherResult;
 }
 
+export interface ResultPageState{
+    tab : TabType;
+}
+
+export interface AttributeState{
+    rankResult : string[];
+    fetching: boolean;
+}
+
 export interface RootState {
     fetchingRandomQuestion: boolean;
     cypherResult: CypherState;
@@ -48,7 +57,21 @@ export interface RootState {
     navGraph: NavGraphState;
     documentResult: DocumentResultState;
     color: ColorState;
+    resultPage: ResultPageState;
+    attributeResult : AttributeState;
 }
+
+const attributeResult = reducerWithInitialState<AttributeState>({rankResult:[], fetching:false})
+.case(fetchAttribute.started, (s , p) => ({rankResult : [],fetching:true}))
+.case(fetchAttribute.done, (s, p) => {
+    console.log(s.fetching);
+    return {rankResult : p.result,fetching:false};
+})
+
+const resultPage = reducerWithInitialState<ResultPageState>({tab: 'qa-cypher'})
+.case(changeTab, (s, p) => {
+    return {tab: p};
+});
 
 const fetchingRandomQuestion = reducerWithInitialState<boolean>(false)
     .case(fetchRandomQuestion.started, () => true)
@@ -77,7 +100,9 @@ reducerWithInitialState<CypherState>({query: ''})
         }})
     .case(fetchCypher.failed, (state, payload) =>
         withError('Failed to Cypher'+JSON.stringify(payload.error), {query: payload.params.query}));            
+         
 
 export const appReducer = combineReducers({
-    fetchingRandomQuestion, graph, navGraph, documentResult, color, cypherResult
+    fetchingRandomQuestion, graph, navGraph, documentResult, color, cypherResult, resultPage,attributeResult
 });
+

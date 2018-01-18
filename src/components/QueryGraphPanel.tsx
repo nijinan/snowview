@@ -39,7 +39,7 @@ class QueryGraphPanel extends React.Component<GraphPanelProps , {}> {
                         getNodeID={n => n.id.toString()}
                         getNodeColor={n => colorMap.get(n.typeName, '#DDDDDD')}
                         getNodeLabel={n => n.typeName}
-                        getNodeText={n => n.display}
+                        getNodeText={n => n.display+n.id}
                         getLinkID={d => d.id.toString()}
                         getLinkText={d => d.type}
                         getSourceNodeID={d => d.start.toString()}

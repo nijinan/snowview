@@ -1,11 +1,14 @@
 import * as React from 'react';
-import { TableCell, TableRow, withStyles, WithStyles,Grid } from 'material-ui';
+import {  TableCell,  TableRow, withStyles, WithStyles,Grid,Button } from 'material-ui';
 import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
 import ExpandLessIcon from 'material-ui-icons/ExpandLess';
 import { Theme } from 'material-ui/styles';
 import QueryGraphPanel from '../components/QueryGraphPanel';
 import { QueryInfo} from '../model';
-
+import { Dispatch } from 'redux';
+import { RootState} from '../redux/reducer';
+import { fetchGraphWorker, changeTab,fetchAttributeWorker } from '../redux/action';
+import { connect } from 'react-redux';
 const styles = (theme: Theme) => ({
     detail: {
         borderLeft: '0.25rem',
@@ -26,16 +29,26 @@ const styles = (theme: Theme) => ({
     },
     querygraphpanel: {
         padding: theme.spacing.unit * 2,
+    },
+    table: {
+        width: '70%',
     }
 });
-
+const mapStateToProps = (state: RootState) => ({
+    
+});
 interface QueryRowProps {
+    dispatch: Dispatch<RootState>;
+    
+}
+
+interface QueryRowProps2 {
     query: QueryInfo;
 }
 
-type QueryRowStyle = WithStyles<'detail' | 'cellRank' | 'cellMain' | 'highlight' | 'querygraphpanel'>;
+type QueryRowStyle = WithStyles<'detail' | 'cellRank' | 'cellMain' | 'highlight' | 'querygraphpanel' | 'table'>;
 
-class QueryRow extends React.Component<QueryRowProps & QueryRowStyle, { expand: boolean }> {
+class QueryRow extends React.Component<QueryRowProps & QueryRowProps2 &  QueryRowStyle, { expand: boolean }> {
     state = {
         expand: false
     };
@@ -50,7 +63,7 @@ class QueryRow extends React.Component<QueryRowProps & QueryRowStyle, { expand: 
 
     render() {
         const {classes} = this.props;
-
+        const {dispatch} = this.props;
         return (
             <TableRow>
             <TableCell>
@@ -65,15 +78,26 @@ class QueryRow extends React.Component<QueryRowProps & QueryRowStyle, { expand: 
                             rank = {this.props.query.rank}
                         />
                     </Grid>
+                  
                 </Grid>}
             </TableCell>
             <TableCell>{this.props.query.score}
                 {!this.state.expand && <ExpandMoreIcon onClick={this.handleExpandMore}/>}
                 {this.state.expand && <ExpandLessIcon onClick={this.handleExpandLess}/>}
+                <Button onClick={() => {
+                            if (this.props.query.returnType === "node"){
+                                dispatch(fetchGraphWorker({query:this.props.query.cypher}));
+                                dispatch(changeTab("api-graph"));
+                            }else{
+                                dispatch(fetchAttributeWorker({query:this.props.query.cypher}));
+                                dispatch(changeTab("attribute-cypher"));
+                            }
+                        }
+                    }>RUN</Button>
             </TableCell>
             </TableRow>
         );
     }
 }
 
-export default withStyles(styles)<QueryRowProps>(QueryRow);
+export default withStyles(styles)<QueryRowProps2>(connect(mapStateToProps)(QueryRow));
