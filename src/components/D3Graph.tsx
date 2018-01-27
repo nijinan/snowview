@@ -5,7 +5,8 @@ import { ForceLink } from 'd3-force';
 const nodeRadius = 20;
 const arrowSize = 12;
 
-interface D3GraphProps<N, R> {
+class D3GraphProps<N, R> {
+    height?: string;
     id: string;
     nodes: N[];
     links: R[];
@@ -20,7 +21,7 @@ interface D3GraphProps<N, R> {
     onNodeClick?: (d: D3Node<N>) => void;
 }
 
-export interface D3Node<N> {
+export class D3Node<N> {
     raw: N;
     x?: number;
     y?: number;
@@ -30,7 +31,7 @@ export interface D3Node<N> {
     fy?: number | null;
 }
 
-interface D3Relation<N, R> {
+class D3Relation<N, R> {
     raw: R;
     type: 'single' | 'repeated';
     source: string | D3Node<N>;
@@ -187,10 +188,10 @@ class D3Graph<N, R> extends React.Component<D3GraphProps<N, R>, {}> {
 
     componentDidMount() {
         const {getNodeID} = this.props;
-
+        const height:string  = this.props.height ? "800px" : "100%";
         this.svg = d3.select<SVGSVGElement, {}>(`#${this.props.id}`)
             .style('width', '100%')
-            .style('height', '100%')
+            .style('height', height)
             .call(d3.zoom().on('zoom', () => {
                 let scale = d3.event.transform.k;
                 const {x, y} = d3.event.transform;

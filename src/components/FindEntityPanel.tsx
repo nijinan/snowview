@@ -33,7 +33,7 @@ const mapStateToProps = (state: RootState) => ({
     relationLists: state.graph.relationLists,
 });
 
-interface FindEntityPanelProps {
+class FindEntityPanelProps {
     selectedNode: Option<number>;
     relations: RelationsState;
     relationLists: RelationListsState;

@@ -30,27 +30,27 @@ function withError<V>(message: string, value: V): V {
     return value;
 }
 
-export interface DocumentResultState {
+export class DocumentResultState {
     fetching: boolean;
     query: string;
     result?: DocumentResult;
 }
 
-export interface CypherState{
+export class CypherState{
     query: string;
     result?: CypherResult;
 }
 
-export interface ResultPageState{
+export class ResultPageState{
     tab : TabType;
 }
 
-export interface AttributeState{
+export class AttributeState{
     rankResult : string[];
     fetching: boolean;
 }
 
-export interface RootState {
+export class RootState {
     fetchingRandomQuestion: boolean;
     cypherResult: CypherState;
     graph: GraphState;
@@ -60,6 +60,7 @@ export interface RootState {
     resultPage: ResultPageState;
     attributeResult : AttributeState;
 }
+
 
 const attributeResult = reducerWithInitialState<AttributeState>({rankResult:[], fetching:false})
 .case(fetchAttribute.started, (s , p) => ({rankResult : [],fetching:true}))

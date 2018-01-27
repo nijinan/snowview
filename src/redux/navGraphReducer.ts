@@ -6,7 +6,7 @@ import { Map } from 'immutable';
 import { withError } from '../utils/utils';
 import * as _ from 'lodash';
 
-export interface NavGraphState {
+export class NavGraphState {
     fetching: boolean;
     nodes: Map<number, Neo4jNode>;
     relations: Map<string, SnowRelation>;

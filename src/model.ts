@@ -1,8 +1,8 @@
-export interface RandomResult {
+export class RandomResult {
     query: string;
 }
 
-export interface CypherQueryResult {
+export class CypherQueryResult {
     searchResult: {
         results: Array<{
             data: Array<{
@@ -15,26 +15,37 @@ export interface CypherQueryResult {
     };
 }
 
-export interface NavResult {
-    nodes: Neo4jNode[],
+export class NavResult {
+    nodes: Neo4jNode[];
     relationships: Neo4jRelation[]
 }
 
-export interface Neo4jRelation {
+export class Neo4jRelation {
+    constructor(id : number, start : number , end : number, type : string){
+        this.id = id;
+        this.startNode = start;
+        this.endNode = end;
+        this.type = type;
+    }
     startNode: number;
     endNode: number;
     id: number;
     type: string;
 }
 
-export interface Neo4jNode {
-    _id: number;
-    _labels: string[];
-    uniformTitle?: string;
-    uniformText?: string;
+export class Neo4jNode {
+    constructor (id : number, type : string,  display : string){
+        this._id = id;
+        this._labels = [type];
+        this.uniformTitle = display;
+    }
+    public _id: number;
+    public _labels: string[];
+    public uniformTitle?: string;
+    public uniformText?: string;
 }
 
-export interface SnowRelation {
+export class SnowRelation {
     shown: boolean;
     id: string;
     source: number;
@@ -42,12 +53,14 @@ export interface SnowRelation {
     types: string[];
 }
 
-export interface SnowNode {
+export class SnowNode {
     shown: boolean;
+    highlight: boolean;
     node: Neo4jNode;
 }
 
-export interface RankedResult {
+
+export class RankedResult {
     finalRank: number;
     solrRank: number;
     body: string;
@@ -55,12 +68,12 @@ export interface RankedResult {
     highlight: boolean;
 }
 
-export interface DocumentResult {
+export class DocumentResult {
     query: string;
     rankedResults: Array<RankedResult>;
 }
 
-export interface QueryNode{
+export class QueryNode{
     focus: boolean;
     type: string;
     typeName: string;
@@ -68,19 +81,20 @@ export interface QueryNode{
     id: number;
 }
 
-export interface QueryEdge{
+export class QueryEdge{
     id: number;
     start: number;
     end: number;
     type: string;
+
 }
 
-export interface QueryGraph{
+export class QueryGraph{
     nodes: QueryNode [];
     edges: QueryEdge [];
 }
 
-export interface QueryInfo {
+export class QueryInfo {
     graph: QueryGraph;
     score: number;
     cypher: string;
@@ -88,7 +102,7 @@ export interface QueryInfo {
     returnType: string;
 }
 
-export interface CypherResult {
+export class CypherResult {
     rankedResults: QueryInfo[];
 }
 

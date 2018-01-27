@@ -18,7 +18,7 @@ const styles = (theme: Theme) => ({
     }
 }) as React.CSSProperties;
 
-interface DocumentTabProps {
+class DocumentTabProps {
     documentResult: DocumentResultState;
 }
 

@@ -2,14 +2,14 @@ import * as $ from 'jquery';
 import actionCreatorFactory from 'typescript-fsa';
 import bindThunkAction from 'typescript-fsa-redux-thunk';
 import { CypherQueryResult, CypherResult, DocumentResult, RandomResult, Neo4jRelation, NavResult } from '../model';
-import { Neo4jNode, TabType } from '../model';
+import { Neo4jNode, TabType, QueryGraph } from '../model';
 import { RootState } from './reducer';
 import * as _ from 'lodash';
 
 // const URL = 'http://162.105.88.181:8080/SnowGraph';
 // const URL = 'http://127.0.0.1:8080/SnowGraph';
-const URL = 'http://127.0.0.1:8080/SnowGraph';
-const URLnew = 'http://127.0.0.1:8080/SnowGraph';
+const URL = 'http://162.105.88.112:8080/SnowGraph';
+const URLnew = 'http://162.105.88.112:8080/SnowGraph';
 
 const actionCreator = actionCreatorFactory();
 
@@ -32,6 +32,9 @@ export const fetchDocumentResultWorker = bindThunkAction(
 export const selectNode = actionCreator<number>('SELECT_NODE');
 export const removeNode = actionCreator<number>('REMOVE_NODE');
 export const addNodes = actionCreator<Neo4jNode[]>('ADD_NODES');
+export const addColor = actionCreator<string>('ADD_COLOR');
+export const addSchemaToMap = actionCreator<QueryGraph>('ADD_SCHEMA_TO_MAP');
+export const addSchemaToNode = actionCreator<{nodes:Neo4jNode[],graph:QueryGraph}>('ADD_SCHEMA_TO_NODE');
 
 export const fetchNode = actionCreator.async<number, Neo4jNode>('FETCH_NODE');
 export const fetchNodeWorker = bindThunkAction(
@@ -70,7 +73,7 @@ export const fetchRelationListWorker = bindThunkAction(
 
 export const showRelations = actionCreator<string[]>('SHOW_RELATIONS');
 
-export const fetchGraph = actionCreator.async<{ query: string }, {}>('FETCH_GRAPH');
+export const fetchGraph = actionCreator.async<{ query: string, graph : QueryGraph }, {}>('FETCH_GRAPH');
 export const fetchGraphWorker = bindThunkAction(
     fetchGraph,
     async (params, dispatch) => {
@@ -80,6 +83,8 @@ export const fetchGraphWorker = bindThunkAction(
 
         dispatch(addNodes(nodes));
         dispatch(addShownRelations(relations));
+        dispatch(addSchemaToMap(params.graph));
+        dispatch(addSchemaToNode({nodes,graph:params.graph}));
         return {};
     });
 

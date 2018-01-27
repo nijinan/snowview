@@ -7,7 +7,7 @@ import QueryGraphPanel from '../components/QueryGraphPanel';
 import { QueryInfo} from '../model';
 import { Dispatch } from 'redux';
 import { RootState} from '../redux/reducer';
-import { fetchGraphWorker, changeTab,fetchAttributeWorker } from '../redux/action';
+import { fetchGraphWorker, changeTab,fetchAttributeWorker, addColor } from '../redux/action';
 import { connect } from 'react-redux';
 const styles = (theme: Theme) => ({
     detail: {
@@ -37,12 +37,12 @@ const styles = (theme: Theme) => ({
 const mapStateToProps = (state: RootState) => ({
     
 });
-interface QueryRowProps {
+class QueryRowProps {
     dispatch: Dispatch<RootState>;
     
 }
 
-interface QueryRowProps2 {
+class QueryRowProps2 {
     query: QueryInfo;
 }
 
@@ -64,6 +64,7 @@ class QueryRow extends React.Component<QueryRowProps & QueryRowProps2 &  QueryRo
     render() {
         const {classes} = this.props;
         const {dispatch} = this.props;
+        this.props.query.graph.nodes.forEach((p)=>{dispatch(addColor(p.typeName))});
         return (
             <TableRow>
             <TableCell>
@@ -72,7 +73,7 @@ class QueryRow extends React.Component<QueryRowProps & QueryRowProps2 &  QueryRo
 
                 {this.state.expand && 
                 <Grid container={true} spacing={0}>
-                    <Grid item={true} xs={8} className={classes.querygraphpanel}>
+                    <Grid item={true} xs={12} className={classes.querygraphpanel}>
                         <QueryGraphPanel
                             graph = {this.props.query.graph}
                             rank = {this.props.query.rank}
@@ -86,7 +87,7 @@ class QueryRow extends React.Component<QueryRowProps & QueryRowProps2 &  QueryRo
                 {this.state.expand && <ExpandLessIcon onClick={this.handleExpandLess}/>}
                 <Button onClick={() => {
                             if (this.props.query.returnType === "node"){
-                                dispatch(fetchGraphWorker({query:this.props.query.cypher}));
+                                dispatch(fetchGraphWorker({query:this.props.query.cypher,graph:this.props.query.graph}));
                                 dispatch(changeTab("api-graph"));
                             }else{
                                 dispatch(fetchAttributeWorker({query:this.props.query.cypher}));

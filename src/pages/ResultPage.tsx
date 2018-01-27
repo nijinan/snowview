@@ -27,7 +27,7 @@ const mapStateToProps = (state: RootState) => ({
     attributeResult: state.attributeResult
 });
 
-interface ResultPageProps {
+class ResultPageProps {
     resultPage: ResultPageState;
     documentResult: DocumentResultState;
     cypherResult: CypherState;

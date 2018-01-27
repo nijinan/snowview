@@ -8,7 +8,7 @@ import { Theme } from 'material-ui/styles';
 import SearchIcon from 'material-ui-icons/Search';
 import { History } from 'history';
 import {
-    fetchDocumentResultWorker, fetchGraphWorker, fetchNavGraphWorker, fetchRandomQuestionWorker
+    fetchDocumentResultWorker, /*fetchGraphWorker,*/ fetchNavGraphWorker, fetchRandomQuestionWorker
 } from '../redux/action';
 import { RootState } from '../redux/reducer';
 import { NavGraphState } from '../redux/navGraphReducer';
@@ -79,7 +79,7 @@ const mapStateToProps = (state: RootState) => ({
     navGraph: state.navGraph
 });
 
-interface IndexPageProps {
+class IndexPageProps {
     fetchingRandomQuestion: boolean;
     navGraph: NavGraphState;
     dispatch: Dispatch<RootState>;
@@ -105,7 +105,7 @@ class IndexPage extends Component<IndexPageProps & IndexPageStyles, { input: str
             dispatch(fetchRandomQuestionWorker((result: string) => this.setState({input: result})));
         } else {
             dispatch(fetchDocumentResultWorker({query: this.state.input}));
-            dispatch(fetchGraphWorker({query: this.state.input}));
+            //dispatch(fetchGraphWorker({query: this.state.input}));
             this.props.history.push('/result');
         }
     }
@@ -151,7 +151,7 @@ class IndexPage extends Component<IndexPageProps & IndexPageStyles, { input: str
                                     uniform graph database. Software developers can access the software-specific
                                     knowledge
                                     graph
-                                    through graphic user interface or graph query language.
+                                    through graphic user class or graph query language.
                                 </Typography>
                             </li>
                             <li>

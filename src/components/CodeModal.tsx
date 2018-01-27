@@ -15,7 +15,7 @@ const styles = (theme: Theme) => ({
     }
 }) as React.CSSProperties;
 
-interface CodeModalProps {
+class CodeModalProps {
     content: string;
     contrast: boolean;
     label: string;

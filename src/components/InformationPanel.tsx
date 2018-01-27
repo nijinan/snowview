@@ -26,7 +26,7 @@ const styles = (theme: Theme) => ({
     }
 });
 
-interface InformationPanelProps {
+class InformationPanelProps {
     selectedNode: Option<number>;
     nodes: NodesState;
 }

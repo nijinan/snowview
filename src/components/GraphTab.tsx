@@ -27,7 +27,7 @@ const mapStateToProps = (state: RootState) => {
     };
 };
 
-interface GraphTabProps {
+class GraphTabProps {
     fetchingGraph: boolean;
     dispatch: Dispatch<RootState>;
 }

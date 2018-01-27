@@ -17,7 +17,7 @@ const styles = (theme: Theme) => ({
     }
 }) as React.CSSProperties;
 
-interface AttributeTabProps {
+class AttributeTabProps {
     attributeResult: AttributeState;
 }
 

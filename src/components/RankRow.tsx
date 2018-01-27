@@ -24,7 +24,7 @@ const styles = (theme: Theme) => ({
     }
 });
 
-interface RankRowProps {
+class RankRowProps {
     rank: number;
     title: string;
     solrRank: number;

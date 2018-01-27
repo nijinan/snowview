@@ -1,10 +1,10 @@
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
 import { Map } from 'immutable';
 import { Chance } from 'chance';
-import { addNodes, fetchNode } from './action';
+import { addNodes, fetchNode, addColor } from './action';
 import { Neo4jNode } from '../model';
 
-export interface ColorState {
+export class ColorState {
     unusedColors: string[];
     colorMap: Map<string, string>;
 }
@@ -48,6 +48,17 @@ function process(state: ColorState, node: Neo4jNode) {
     return {unusedColors: state.unusedColors.filter(x => x !== c), colorMap: state.colorMap.set(label, c)};
 }
 
+function processStr(state: ColorState, nodeStr: string) {
+    const label = nodeStr;
+    if (state.colorMap.has(label)) {
+        return state;
+    }
+    const c = randomColor(state.unusedColors);
+    return {unusedColors: state.unusedColors.filter(x => x !== c), colorMap: state.colorMap.set(label, c)};
+}
+
+
 export const color = reducerWithInitialState<ColorState>({unusedColors: mainColors, colorMap: Map()})
     .case(fetchNode.done, (s, p) => process(s, p.result))
-    .case(addNodes, (s, p) => p.reduce((prev, n) => process(prev, n), s));
+    .case(addNodes, (s, p) => p.reduce((prev, n) => process(prev, n), s))
+    .case(addColor, (s, p)=> processStr(s, p));

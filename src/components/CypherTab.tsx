@@ -13,7 +13,7 @@ const styles = (theme: Theme) => ({
     },
 }) as React.CSSProperties;
 
-interface CypherTabProps {
+class CypherTabProps {
     cypherResult: CypherState;
 }
 

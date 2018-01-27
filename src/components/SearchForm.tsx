@@ -38,7 +38,7 @@ const mapStateToProps = (state: RootState) => ({
     query: state.documentResult.query
 });
 
-interface SearchFormProps {
+class SearchFormProps {
     query: string;
     dispatch: Dispatch<RootState>;
 }
